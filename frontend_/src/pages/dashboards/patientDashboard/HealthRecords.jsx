@@ -211,7 +211,7 @@ export default function HealthRecords() {
     fetchRecords();
   }, [fetchRecords]);
 
-  // ✅ MOST IMPORTANT FIX: Latest Record Only
+  // MOST IMPORTANT FIX: Latest Record Only
   const latestRecord = records.length > 0 ? records[0] : null;
 
   const latestVitals = VITAL_MAP.map((cfg) => ({
@@ -227,7 +227,7 @@ export default function HealthRecords() {
 
       {error && <ErrorBanner message={error} onRetry={fetchRecords} />}
 
-      {/* ✅ Latest Record Info */}
+      {/* Latest Record Info */}
       {latestRecord && (
         <div className="text-xs text-gray-400">
           Latest record from Dr. {latestRecord.doctor?.name || "Unknown"} •{" "}
