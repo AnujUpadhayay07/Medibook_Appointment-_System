@@ -10,10 +10,10 @@ const router = express.Router();
 router.get("/profile", verifyToken, getProfile);
 router.get("/dashboard", verifyToken, getDashboard);
 
-// ✅ Get all medicines (optional ?today=true)
+// Get all medicines (optional ?today=true)
 router.get("/medicines", verifyToken, checkRole("patient"), getMyMedicines);
 
-// ✅ Mark dose as taken
+// Mark dose as taken
 router.put("/medicines/:id/take", verifyToken, checkRole("patient"), updateMedicineStatus);
 
 export default router;
