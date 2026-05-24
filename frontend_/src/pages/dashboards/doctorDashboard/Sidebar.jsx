@@ -108,13 +108,13 @@ function NavItem({ item, active, onClick, badge }) {
 export default function DoctorSidebar({ activeSection, setActiveSection, onLogout }) {
   const { user } = useAuth();
 
-  // ✅ Safe initials — works whether name is "Anuj" or "Dr. Anuj Sharma"
+  // Safe initials — works whether name is "Anuj" or "Dr. Anuj Sharma"
   const cleanName = (user?.name || "").replace(/^Dr\.?\s*/i, "").trim();
   const initials  = cleanName
     ? cleanName.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()
     : "DR";
 
-  // ✅ Display name — never prefix "Dr." if it's already there
+  // Display name — never prefix "Dr." if it's already there
   const displayName = (user?.name || "Doctor").replace(/^Dr\.?\s*/i, "").trim();
   const fullDisplay = `Dr. ${displayName}`;
 
@@ -163,7 +163,7 @@ export default function DoctorSidebar({ activeSection, setActiveSection, onLogou
             style={{ background: THEME.onlineDot, borderColor: THEME.onlineBorder }} />
         </div>
         <div className="min-w-0">
-          {/* ✅ Shows "Dr. Anuj" — never "Dr. Dr. Anuj" */}
+          {/* Shows "Dr. Anuj" — never "Dr. Dr. Anuj" */}
           <div className="text-white text-[13px] font-semibold truncate">{fullDisplay}</div>
           <div className="text-[11px] mt-0.5 truncate" style={{ color: THEME.roleMuted }}>
             {user?.speciality || "Doctor"}
