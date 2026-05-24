@@ -9,9 +9,7 @@ const generateToken = (user) =>
     { expiresIn: "7d" }
   );
 
-// ==========================
-// 📝 REGISTER
-// ==========================
+//  REGISTER
 export const register = async (req, res) => {
   try {
     const {
@@ -22,7 +20,7 @@ export const register = async (req, res) => {
       phone,
       speciality,
       fees,
-      experience, // ✅ ADDED
+      experience, // ADDED
     } = req.body;
 
     const existing = await User.findOne({ email });
@@ -44,13 +42,13 @@ export const register = async (req, res) => {
       speciality: safeRole === "doctor" ? speciality : undefined,
       fees: safeRole === "doctor" ? fees : undefined,
 
-      // ✅ FIXED (THIS WAS MISSING)
+      // FIXED (THIS WAS MISSING)
       experience: safeRole === "doctor" ? Number(experience) : undefined,
 
-      // ✅ NEW STATUS SYSTEM
+      //  NEW STATUS SYSTEM
       status: safeRole === "doctor" ? "pending" : "approved",
 
-      // ⚠️ KEEP TEMP (for backward compatibility)
+      //  KEEP TEMP (for backward compatibility)
       isApproved: safeRole === "doctor" ? false : true,
     });
 
@@ -63,9 +61,7 @@ export const register = async (req, res) => {
   }
 };
 
-// ==========================
-// 🔐 LOGIN
-// ==========================
+//  LOGIN
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -80,12 +76,12 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: "Wrong password" });
     }
 
-  // 🚫 BLOCKED USER CHECK (ADD HERE)
+  //  BLOCKED USER CHECK (ADD HERE)
   if (!user.isActive) {
     return res.status(403).json({ message: "Account is blocked by admin" });
   }
 
-    // ✅ UPDATED APPROVAL CHECK
+    //  UPDATED APPROVAL CHECK
     if (user.role === "doctor" && user.status !== "approved") {
       return res.status(403).json({
         message: "Account pending admin approval",
@@ -102,9 +98,7 @@ export const login = async (req, res) => {
   }
 };
 
-// ==========================
-// 👤 GET PROFILE
-// ==========================
+//  GET PROFILE
 export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
@@ -114,17 +108,15 @@ export const getMe = async (req, res) => {
   }
 };
 
-// ==========================
-// ✏️ UPDATE PROFILE
-// ==========================
+//  UPDATE PROFILE
 export const updateProfile = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    // ❌ Prevent role change
+    //  Prevent role change
     if (req.body.role) delete req.body.role;
 
-    // 🔐 Hash password if updating
+    //  Hash password if updating
     if (req.body.password) {
       req.body.password = await bcrypt.hash(req.body.password, 10);
     }
@@ -144,16 +136,14 @@ export const updateProfile = async (req, res) => {
   }
 };
 
-// ==========================
-// 🩺 GET APPROVED DOCTORS (FOR PATIENT)
-// ==========================
+//  GET APPROVED DOCTORS (FOR PATIENT)
 export const getDoctors = async (req, res) => {
   try {
     const { speciality } = req.query;
 
     let filter = {
       role: "doctor",
-      status: "approved", // ✅ UPDATED
+      status: "approved", //  UPDATED
     };
 
     if (speciality && speciality !== "all") {
