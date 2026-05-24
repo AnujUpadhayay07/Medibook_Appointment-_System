@@ -13,15 +13,15 @@ import Profile from "./Profile";
 
 export default function PatientDashboard() {
   const [activeSection, setActiveSection] = useState("overview");
-  const { user, logout, loading } = useAuth(); // ✅ include loading
+  const { user, logout, loading } = useAuth(); // include loading
   const navigate = useNavigate();
 
-  // 🔥 VERY IMPORTANT
+  // VERY IMPORTANT
   if (loading) {
     return <div className="p-6 text-lg">Loading dashboard...</div>;
   }
 
-  // 🔥 If no user → go back to login
+  // If no user → go back to login
   if (!user) {
     navigate("/login");
     return null;
