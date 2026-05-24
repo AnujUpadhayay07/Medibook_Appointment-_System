@@ -3,9 +3,7 @@ import User from "../models/User.js";
 import HealthRecord from "../models/HealthRecord.js";
 import bcrypt from "bcryptjs";
 
-// ==========================
-// 🏠 DOCTOR DASHBOARD OVERVIEW
-// ==========================
+// DOCTOR DASHBOARD OVERVIEW
 export const getDoctorDashboardOverview = async (req, res) => {
   try {
     const doctorId = req.user.id;
@@ -62,9 +60,7 @@ export const getDoctorDashboardOverview = async (req, res) => {
   }
 };
 
-// ==========================
-// 📋 GET ALL APPOINTMENTS
-// ==========================
+// GET ALL APPOINTMENTS
 export const getMyAppointmentsForDoctor = async (req, res) => {
   try {
     const doctorId = req.user.id;
@@ -77,9 +73,7 @@ export const getMyAppointmentsForDoctor = async (req, res) => {
   }
 };
 
-// ==========================
-// 📋 GET UPCOMING APPOINTMENTS
-// ==========================
+// GET UPCOMING APPOINTMENTS
 export const getUpcomingAppointments = async (req, res) => {
   try {
     const doctorId = req.user.id;
@@ -95,9 +89,7 @@ export const getUpcomingAppointments = async (req, res) => {
   }
 };
 
-// ==========================
-// 👥 GET ALL PATIENTS
-// ==========================
+// GET ALL PATIENTS
 export const getMyPatients = async (req, res) => {
   try {
     const doctorId  = req.user.id;
@@ -111,9 +103,7 @@ export const getMyPatients = async (req, res) => {
   }
 };
 
-// ==========================
-// 🏥 GET PATIENT HEALTH RECORDS
-// ==========================
+// GET PATIENT HEALTH RECORDS
 export const getPatientHealthRecords = async (req, res) => {
   try {
     const patientId = req.params.id;
@@ -127,10 +117,8 @@ export const getPatientHealthRecords = async (req, res) => {
   }
 };
 
-// ==========================
-// 👤 GET DOCTOR PROFILE
+// GET DOCTOR PROFILE
 // GET /api/doctor/profile
-// ==========================
 export const getDoctorProfile = async (req, res) => {
   try {
     const doctorId = req.user.id;
@@ -144,10 +132,8 @@ export const getDoctorProfile = async (req, res) => {
   }
 };
 
-// ==========================
-// ✏️ UPDATE DOCTOR PROFILE
+// UPDATE DOCTOR PROFILE
 // PUT /api/doctor/profile
-// ==========================
 export const updateDoctorProfile = async (req, res) => {
   try {
     const doctorId = req.user.id;
@@ -161,7 +147,7 @@ export const updateDoctorProfile = async (req, res) => {
     const doctor = await User.findById(doctorId);
     if (!doctor) return res.status(404).json({ message: "Doctor not found" });
 
-    // ── Basic fields ──────────────────────────────────────────────────────
+    // ── Basic fields ───────────────────────────────────────────────
     if (name)       doctor.name       = name;
     if (phone)      doctor.phone      = phone;
     if (dob)        doctor.dob        = new Date(dob);
@@ -198,10 +184,9 @@ export const updateDoctorProfile = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-// ==========================
-// 📋 GET DOCTOR APPOINTMENTS (with optional status/date filters)
+
+// GET DOCTOR APPOINTMENTS (with optional status/date filters)
 // GET /api/doctor/appointments
-// ==========================
 export const getDoctorAppointments = async (req, res) => {
   try {
     const doctorId = req.user.id;  // currently logged-in doctor
