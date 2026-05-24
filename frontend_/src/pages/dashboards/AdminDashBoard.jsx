@@ -58,9 +58,9 @@ function AdminDashboard() {
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {[
-            { label: 'Total Doctors', value: doctors.length, icon: '🩺', color: 'bg-blue-50 border-blue-200' },
-            { label: 'Pending Approval', value: doctors.filter(d => !d.isApproved).length, icon: '⏳', color: 'bg-yellow-50 border-yellow-200' },
-            { label: 'Total Patients', value: users.filter(u => u.role === 'patient').length, icon: '👥', color: 'bg-green-50 border-green-200' },
+            { label: 'Total Doctors', value: doctors.length, icon: '', color: 'bg-blue-50 border-blue-200' },
+            { label: 'Pending Approval', value: doctors.filter(d => !d.isApproved).length, icon: '', color: 'bg-yellow-50 border-yellow-200' },
+            { label: 'Total Patients', value: users.filter(u => u.role === 'patient').length, icon: '', color: 'bg-green-50 border-green-200' },
           ].map((stat) => (
             <div key={stat.label} className={`p-6 rounded-2xl border ${stat.color} flex items-center gap-4`}>
               <span className="text-4xl">{stat.icon}</span>
