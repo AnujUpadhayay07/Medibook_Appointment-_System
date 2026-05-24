@@ -19,7 +19,7 @@ import {
 import { addMedicine } from "../controllers/medicineController.js";
 import upload from "../middleware/uploadMiddleware.js";
 import verifyToken from "../middleware/verifyToken.js";
-import checkRole from "../middleware/checkrole.js";
+import checkRole from "../middleware/checkRole.js";
 
 const router = express.Router();
 
