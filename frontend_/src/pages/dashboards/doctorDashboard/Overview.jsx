@@ -84,7 +84,7 @@ function formatDate(d) {
   return new Date(d).toLocaleDateString("en-IN", { day: "numeric", month: "short" });
 }
 
-// ✅ Safely strip any existing "Dr." prefix before re-adding it
+// Safely strip any existing "Dr." prefix before re-adding it
 function buildDrName(rawName = "") {
   const clean = rawName.replace(/^Dr\.?\s*/i, "").trim();
   return clean ? `Dr. ${clean}` : "Doctor";
@@ -147,7 +147,7 @@ function HeaderBanner({ user, dashData, greeting, today }) {
   const speciality = user?.speciality || dashData?.doctor?.speciality || "Specialist";
   const isApproved = dashData?.doctor?.isApproved;
 
-  // ✅ Fix: strip any existing Dr. prefix, then add it once
+  // Fix: strip any existing Dr. prefix, then add it once
   const drName = buildDrName(rawName);
 
   return (
@@ -170,9 +170,9 @@ function HeaderBanner({ user, dashData, greeting, today }) {
 
       <div className="relative flex items-center justify-between gap-4">
         <div className="flex-1">
-          <p className="text-blue-100 text-sm font-medium">{greeting} 👨‍⚕️</p>
+          <p className="text-blue-100 text-sm font-medium">{greeting} </p>
           <div className="flex items-center gap-2 mt-0.5">
-            {/* ✅ drName is always "Dr. Anuj" — never "Dr. Dr. Anuj" */}
+            {/* drName is always "Dr. Anuj" — never "Dr. Dr. Anuj" */}
             <h1 className="text-white text-2xl font-bold tracking-tight">{drName}</h1>
             {isApproved && <MdVerified size={20} style={{ color: "#38bdf8" }} />}
           </div>
@@ -194,7 +194,7 @@ function HeaderBanner({ user, dashData, greeting, today }) {
                 color:      isApproved ? "#86efac" : "#fde047",
               }}
             >
-              {isApproved ? "✓ Approved" : "⏳ Pending Approval"}
+              {isApproved ? "Approved" : "Pending Approval"}
             </span>
           </div>
         </div>
