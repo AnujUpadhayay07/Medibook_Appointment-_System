@@ -219,7 +219,7 @@ export const getMyDoctors = async (req, res) => {
   }
 };
 
-// 🧑‍⚕️ ACCEPT / REJECT APPOINTMENT (DOCTOR)
+//  ACCEPT / REJECT APPOINTMENT (DOCTOR)
 export const updateAppointmentStatus = async (req, res) => {
   try {
     const doctorId = req.user.id;
