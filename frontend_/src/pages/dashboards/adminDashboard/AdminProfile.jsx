@@ -7,7 +7,7 @@ import {
 } from "react-icons/md";
 import API from "../../../api/axios";
 
-// 🎨 Same design feel as Patients
+// Same design feel as Patients
 const CARD_STYLE = {
   border: "1px solid #f1f5f9",
   boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
@@ -50,9 +50,9 @@ export default function AdminProfile() {
 
       await API.put("/auth/update", payload);
 
-      setMessage("Profile updated successfully ✅");
+      setMessage("Profile updated successfully");
     } catch (err) {
-      setMessage(err.response?.data?.message || "Update failed ❌");
+      setMessage(err.response?.data?.message || "Update failed");
     }
   };
 
