@@ -1,7 +1,7 @@
 import express from "express";
 
 import verifyToken from "../middleware/verifyToken.js";
-import checkRole from "../middleware/checkrole.js";
+import checkRole from "../middleware/checkRole.js";
 import { getAvailability, saveAvailability, getAvailabilityForDoctor } from "../controllers/availabilityController.js";
 
 const router = express.Router();
