@@ -5,7 +5,7 @@ import {
   getMe,
   updateProfile,
   getDoctors,
-} from "../controllers/authController.js";  // ✅ fixed
+} from "../controllers/authController.js";  // fixed
 
 import verifyToken from "../middleware/verifyToken.js";
 
