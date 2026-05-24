@@ -24,7 +24,7 @@ const appointmentSchema = new mongoose.Schema(
       required: true,
     },
 
-    // 📝 Patient note (VERY IMPORTANT for dashboard)
+    // Patient note (VERY IMPORTANT for dashboard)
     note: {
       type: String,
       default: "",
