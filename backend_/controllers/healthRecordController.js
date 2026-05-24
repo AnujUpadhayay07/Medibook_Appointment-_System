@@ -1,10 +1,8 @@
 import HealthRecord from "../models/HealthRecord.js";
 import Appointment from "../models/Appointment.js";
 
+// DOCTOR: Add Health Record (Vitals + File Upload)
 
-// ─────────────────────────────────────────────────────────────
-// 👉 DOCTOR: Add Health Record (Vitals + File Upload)
-// ─────────────────────────────────────────────────────────────
 export const addHealthRecord = async (req, res) => {
   try {
     if (req.user.role !== "doctor") {
@@ -16,7 +14,7 @@ export const addHealthRecord = async (req, res) => {
     const { appointmentId, notes, status } = req.body;
     const records = req.body.records ? JSON.parse(req.body.records) : {};
 
-    // ✅ Validate appointment
+    // Validate appointment
     if (!appointmentId) {
       return res.status(400).json({ message: "Appointment ID is required" });
     }
@@ -27,23 +25,23 @@ export const addHealthRecord = async (req, res) => {
       return res.status(404).json({ message: "Appointment not found" });
     }
 
-    // ✅ Security check
+    // Security check
     if (appointment.doctorId.toString() !== doctorId) {
       return res.status(403).json({ message: "Not authorized" });
     }
 
-    // ✅ At least one vital required
+    // At least one vital required
     if (!records || Object.keys(records).length === 0) {
       return res.status(400).json({ message: "At least one health field is required" });
     }
 
-    // ✅ File upload
+    // File upload
     let fileUrl = null;
     if (req.file) {
       fileUrl = `/uploads/${req.file.filename}`;
     }
 
-    // ✅ Create record
+    // Create record
     const record = await HealthRecord.create({
       patientId: appointment.patientId,
       doctorId,
@@ -64,10 +62,8 @@ export const addHealthRecord = async (req, res) => {
   }
 };
 
+// PATIENT: Get My Health Records (ALL doctors)
 
-// ─────────────────────────────────────────────────────────────
-// 👉 PATIENT: Get My Health Records (ALL doctors)
-// ─────────────────────────────────────────────────────────────
 export const getMyHealthRecords = async (req, res) => {
   try {
     if (req.user.role !== "patient") {
@@ -81,7 +77,7 @@ export const getMyHealthRecords = async (req, res) => {
       .populate("appointmentId", "date time")
       .sort({ createdAt: -1 });
 
-    // ✅ Format records
+    // Format records
     const formattedRecords = records.map((record) => ({
       _id: record._id,
 
@@ -95,7 +91,7 @@ export const getMyHealthRecords = async (req, res) => {
         time: record.appointmentId?.time
       },
 
-      // ✅ Convert Map → Object
+      // Convert Map → Object
       records: record.records ? Object.fromEntries(record.records) : {},
 
       status: record.status || "Normal",
@@ -112,9 +108,8 @@ export const getMyHealthRecords = async (req, res) => {
 };
 
 
-// ─────────────────────────────────────────────────────────────
-// 👉 DOCTOR: Update Health Record
-// ─────────────────────────────────────────────────────────────
+// DOCTOR: Update Health Record
+
 export const updateHealthRecord = async (req, res) => {
   try {
     if (req.user.role !== "doctor") {
@@ -131,17 +126,17 @@ export const updateHealthRecord = async (req, res) => {
       return res.status(404).json({ message: "Record not found" });
     }
 
-    // ✅ Security check
+    // Security check
     if (record.doctorId.toString() !== doctorId) {
       return res.status(403).json({ message: "Not authorized" });
     }
 
-    // ✅ Update fields
+    // Update fields
     if (records) record.records = records;
     if (notes) record.notes = notes;
     if (status) record.status = status;
 
-    // ✅ Update file if exists
+    // Update file if exists
     if (req.file) {
       record.fileUrl = `/uploads/${req.file.filename}`;
     }
@@ -159,9 +154,8 @@ export const updateHealthRecord = async (req, res) => {
 };
 
 
-// ─────────────────────────────────────────────────────────────
-// 👉 DOCTOR: Get Patient Health Records (ONLY HIS OWN)
-// ─────────────────────────────────────────────────────────────
+// DOCTOR: Get Patient Health Records (ONLY HIS OWN)
+
 export const getPatientHealthRecords = async (req, res) => {
   try {
     if (req.user.role !== "doctor") {
@@ -176,7 +170,7 @@ export const getPatientHealthRecords = async (req, res) => {
       .populate("appointmentId", "date time")
       .sort({ createdAt: -1 });
 
-    // ✅ Convert Map → Object
+    // Convert Map → Object
     const formatted = records.map((r) => ({
       _id: r._id,
       patientId: r.patientId,
