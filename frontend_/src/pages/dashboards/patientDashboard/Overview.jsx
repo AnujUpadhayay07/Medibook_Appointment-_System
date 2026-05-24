@@ -451,7 +451,7 @@ function HeaderBanner({ firstName, greeting, today }) {
         <path d="M0 40 L30 40 L40 40 L50 10 L60 70 L70 40 L90 40 L100 25 L110 55 L120 40 L160 40 L170 20 L180 60 L190 40 L200 40" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
       <div className="relative">
-        <p className="text-teal-100 text-sm font-medium">{greeting} 👋</p>
+        <p className="text-teal-100 text-sm font-medium">{greeting} </p>
         <h1 className="text-white text-2xl font-bold mt-0.5 tracking-tight">{firstName}</h1>
         <p className="text-teal-200 text-xs mt-1.5">{today}</p>
       </div>
