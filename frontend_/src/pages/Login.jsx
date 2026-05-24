@@ -38,7 +38,7 @@ function Login() {
   return (
     <div className={`min-h-screen flex relative ${dark ? 'bg-gray-900' : 'bg-white'}`}>
 
-      {/* ✅ TOP RIGHT THEME BUTTON (LIKE NAVBAR) */}
+      {/* TOP RIGHT THEME BUTTON (LIKE NAVBAR) */}
       <button
         onClick={() => setDark(!dark)}
         className={`fixed top-5 right-5 z-50 w-10 h-10 rounded-lg flex items-center justify-center border transition
