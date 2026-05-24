@@ -54,7 +54,7 @@ function App() {
         }
       />
 
-      {/* ✅ ADMIN (IMPORTANT CHANGE HERE) */}
+      {/* ADMIN (IMPORTANT CHANGE HERE) */}
       <Route
         path="/admin/*"
         element={
