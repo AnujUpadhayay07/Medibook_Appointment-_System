@@ -8,7 +8,7 @@ import AdminDoctors from "./AdminDoctors";
 import AdminPatients from "./AdminPatients";
 import AdminAppointments from "./Adminappointments";
 import AdminAnalytics from "./Analytics";
-import AdminProfile from "./AdminProfile"; // ✅ added
+import AdminProfile from "./AdminProfile"; // added
 
 export default function AdminDashboard() {
   const [activeSection, setActiveSection] = useState("overview");
@@ -41,7 +41,7 @@ export default function AdminDashboard() {
         return <AdminAppointments />;
       case "analytics":
         return <AdminAnalytics />;
-      case "profile": // ✅ added
+      case "profile": // added
         return <AdminProfile />;
       default:
         return <AdminOverview setActiveSection={setActiveSection} />;
