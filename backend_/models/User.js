@@ -19,14 +19,15 @@ const userSchema = new mongoose.Schema({
 
   experience: { type: Number },
 
-  // 🔥 NEW STATUS FIELD (MAIN CHANGE)
+  // NEW STATUS FIELD (MAIN CHANGE)
   status: {
     type: String,
     enum: ["pending", "approved", "rejected"],
     default: "pending",
   },
 
-  // ⚠️ KEEP TEMPORARILY (for migration safety)
+  // KEEP TEMPORARILY (for migration safety)
+  
   isApproved: { type: Boolean, default: false },
   isActive: { type: Boolean, default: true },
 
