@@ -45,7 +45,7 @@ function DoctorRow({ doctor, onBook }) {
             {doctor.speciality}
           </span>
 
-          {/* ✅ FIX: Show actual experience from DB, only fallback if truly missing */}
+          {/* FIX: Show actual experience from DB, only fallback if truly missing */}
           <p className="text-xs mt-1 text-purple-500 font-medium">
           {doctor.experience
           ?`${doctor.experience}+ years experience`
@@ -55,7 +55,7 @@ function DoctorRow({ doctor, onBook }) {
       </div>
 
       <div className="text-right">
-        {/* ✅ Fees from DB — dynamic */}
+        {/* Fees from DB — dynamic */}
         <p className="text-lg font-bold text-teal-600">
           {doctor.fees ? `₹${doctor.fees}` : "Fee not listed"}
         </p>
@@ -99,9 +99,9 @@ function BookingModal({ doctor, onClose }) {
     fetchAvailability();
   }, [doctor._id]);
 
-  // ✅ FIX: Timezone-safe day calculation
+  // FIX: Timezone-safe day calculation
   // new Date("2025-01-15") → UTC midnight → wrong day in IST
-  // new Date(2025, 0, 15)  → local midnight → correct ✅
+  // new Date(2025, 0, 15)  → local midnight → correct
   const slotsForDay = () => {
     if (!date || !availability) return [];
 
@@ -137,7 +137,7 @@ function BookingModal({ doctor, onClose }) {
 
       setSuccess(true);
     } catch (err) {
-      // ✅ Show proper error (including race condition message from backend)
+      // Show proper error (including race condition message from backend)
       setError(err.response?.data?.message || "Booking failed. Please try again.");
     } finally {
       setBookingLoading(false);
@@ -239,7 +239,7 @@ function BookingModal({ doctor, onClose }) {
           value={date}
           onChange={(e) => {
             setDate(e.target.value);
-            setTime(""); // ✅ Reset time when date changes
+            setTime(""); // Reset time when date changes
             setError("");
           }}
           className="w-full border rounded-xl px-4 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-teal-400"
@@ -279,7 +279,7 @@ function BookingModal({ doctor, onClose }) {
           className="w-full border rounded-xl px-4 py-2 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-teal-400 resize-none"
         />
 
-        {/* ✅ Error message (booking errors like race condition) */}
+        {/* Error message (booking errors like race condition) */}
         {error && (
           <p className="text-red-500 text-xs mb-3 bg-red-50 px-3 py-2 rounded-lg">{error}</p>
         )}
