@@ -25,12 +25,12 @@ export default function Profile() {
     emergency: "",
   });
 
-  // ✅ Load Countries
+  // Load Countries
   useEffect(() => {
     setCountries(Country.getAllCountries());
   }, []);
 
-  // ✅ Load States when Country changes
+  // Load States when Country changes
   useEffect(() => {
     if (form.country) {
       const selected = countries.find(c => c.name === form.country);
@@ -42,7 +42,7 @@ export default function Profile() {
     }
   }, [form.country, countries]);
 
-  // ✅ Fetch Profile (FIXED DOB)
+  // Fetch Profile (FIXED DOB)
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -53,7 +53,7 @@ export default function Profile() {
           email: data.email || "",
           phone: data.phone || "",
           gender: data.gender || "",
-          dob: data.dob ? data.dob.split("T")[0] : "", // 🔥 FIX
+          dob: data.dob ? data.dob.split("T")[0] : "", // FIX
           weight: data.weight || "",
           height: data.height || "",
           country: data.country || "",
@@ -73,7 +73,7 @@ export default function Profile() {
     fetchProfile();
   }, []);
 
-  // ✅ Save Profile
+  // Save Profile
   const saveProfile = async () => {
     try {
       await API.put("/auth/update", form);
@@ -161,7 +161,7 @@ export default function Profile() {
             ) : <Display value={form.gender} />}
           </Field>
 
-          {/* ✅ FIXED DOB DISPLAY */}
+          {/* FIXED DOB DISPLAY */}
           <Field label="Date of Birth">
             {editing ? (
               <input
@@ -266,7 +266,7 @@ function Input({ editing, value, onChange }) {
   ) : <Display value={value} />;
 }
 
-/* ✅ DATE FORMAT FIX */
+/* DATE FORMAT FIX */
 function Display({ value, isDate }) {
   let displayValue = value;
 
