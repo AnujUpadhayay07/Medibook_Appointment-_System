@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('role', data.role);
     localStorage.setItem('name', data.name);
 
-    // ✅ TEMP user so UI doesn't break
+    // TEMP user so UI doesn't break
     setUser({ name: data.name, role: data.role });
   };
 
