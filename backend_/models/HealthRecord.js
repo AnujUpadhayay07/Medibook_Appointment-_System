@@ -2,28 +2,28 @@ import mongoose from "mongoose";
 
 const healthRecordSchema = new mongoose.Schema(
   {
-    // 👤 Patient
+    // Patient
     patientId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true
     },
 
-    // 👨‍⚕️ Doctor who created this record
+    // Doctor who created this record
     doctorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true
     },
 
-    // 📅 Linked appointment (VERY IMPORTANT)
+    // Linked appointment (VERY IMPORTANT)
     appointmentId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Appointment",
       required: true
     },
 
-    // ❤️ Vitals (dynamic fields)
+    // Vitals (dynamic fields)
     // Example: { bp: "120/80", sugar: "95" }
     records: {
       type: Map,
@@ -31,21 +31,21 @@ const healthRecordSchema = new mongoose.Schema(
       default: {}
     },
 
-    // 📊 Overall health status (by doctor)
+    // Overall health status (by doctor)
     status: {
       type: String,
       enum: ["Good", "Normal", "Bad"],
       default: "Normal"
     },
 
-    // 📝 Doctor notes
+    // Doctor notes
     notes: {
       type: String,
       trim: true,
       default: ""
     },
 
-    // 📄 Uploaded report (optional)
+    // Uploaded report (optional)
     fileUrl: {
       type: String,
       default: ""
@@ -53,7 +53,7 @@ const healthRecordSchema = new mongoose.Schema(
 
   },
   {
-    timestamps: true // ✅ gives createdAt (used for sorting + history)
+    timestamps: true // gives createdAt (used for sorting + history)
   }
 );
 
