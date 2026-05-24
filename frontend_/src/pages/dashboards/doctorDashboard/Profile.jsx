@@ -1,7 +1,7 @@
 // DoctorProfile.jsx
 // GET /doctor/profile   → fetch profile
 // PUT /doctor/profile   → save changes
-// 🔥 Calls updateUser() from AuthContext after save so DoctorOverview picks up new name immediately
+// Calls updateUser() from AuthContext after save so DoctorOverview picks up new name immediately
 
 import { useState, useEffect, useCallback } from "react";
 import {
@@ -157,7 +157,7 @@ function StatPill({ label, value }) {
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 export default function DoctorProfile() {
-  // 🔥 Get updateUser so we can sync context after save
+  // Get updateUser so we can sync context after save
   const { updateUser } = useAuth();
 
   const [profile, setProfile] = useState(null);
@@ -228,7 +228,7 @@ export default function DoctorProfile() {
       setEditing(false);
       setPwdForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
 
-      // 🔥 Sync AuthContext — DoctorOverview header will update immediately
+      // Sync AuthContext — DoctorOverview header will update immediately
       // without needing a page reload or dashboard re-fetch
       updateUser({
         name:       data.doctor.name,
@@ -303,7 +303,7 @@ export default function DoctorProfile() {
                     color:      profile?.isApproved ? "#86efac" : "#fde047",
                   }}
                 >
-                  {profile?.isApproved ? "✓ Approved" : "⏳ Pending Approval"}
+                  {profile?.isApproved ? "Approved" : "Pending Approval"}
                 </span>
                 {profile?.experience != null && (
                   <span
