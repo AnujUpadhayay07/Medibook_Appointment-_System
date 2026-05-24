@@ -14,12 +14,12 @@ export default function DoctorDashboard() {
   const { user, logout, loading } = useAuth();
   const navigate = useNavigate();
 
-  // 🔥 Loading fallback
+  // Loading fallback
   if (loading) {
     return <div className="p-6 text-lg text-blue-600">Loading dashboard...</div>;
   }
 
-  // 🔥 If no user → go to login
+  // If no user → go to login
   if (!user) {
     navigate("/login");
     return null;
@@ -54,7 +54,7 @@ export default function DoctorDashboard() {
         setActiveSection={setActiveSection}
         user={user}
         onLogout={handleLogout}
-        theme="blue" // ✅ Blue variant for doctor
+        theme="blue" // Blue variant for doctor
       />
       <main className="flex-1 overflow-y-auto p-6 lg:p-8">
         <div className="max-w-7xl mx-auto">{renderSection()}</div>
