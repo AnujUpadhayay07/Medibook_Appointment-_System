@@ -1,21 +1,21 @@
 import User from "../models/User.js";
 import Appointment from "../models/Appointment.js";
 
-// ==========================
-// 🏠 ADMIN OVERVIEW
+
+// ADMIN OVERVIEW
 // GET /api/admin/overview
-// ==========================
+
 export const getAdminOverview = async (req, res) => {
   try {
     const totalDoctors    = await User.countDocuments({ role: "doctor" });
 
-    // ✅ UPDATED TO STATUS
+    // UPDATED TO STATUS
     const approvedDoctors = await User.countDocuments({ role: "doctor", status: "approved" });
     const pendingDoctors  = await User.countDocuments({ role: "doctor", status: "pending" });
 
     const totalPatients   = await User.countDocuments({ role: "patient" });
 
-    // ✅ DATE HANDLING
+    // DATE HANDLING
     const today = new Date();
     const startOfDay = new Date(today);
     startOfDay.setHours(0, 0, 0, 0);
@@ -23,7 +23,7 @@ export const getAdminOverview = async (req, res) => {
     const endOfDay = new Date(today);
     endOfDay.setHours(23, 59, 59, 999);
 
-    // ✅ Counts
+    // Counts
     const todayAppointments = await Appointment.countDocuments({
       date: { $gte: startOfDay, $lte: endOfDay },
     });
@@ -34,7 +34,7 @@ export const getAdminOverview = async (req, res) => {
     const pendingAppointments   = await Appointment.countDocuments({ status: "pending" });
     const cancelledAppointments = await Appointment.countDocuments({ status: "cancelled" });
 
-    // ✅ Today appointments list
+    // Today appointments list
     const todayAppointmentsList = await Appointment.find({
       date: { $gte: startOfDay, $lte: endOfDay },
     })
@@ -42,14 +42,14 @@ export const getAdminOverview = async (req, res) => {
       .populate("doctorId", "name speciality")
       .sort({ time: 1 });
 
-    // ✅ Recent appointments
+    // Recent appointments
     const recentAppointments = await Appointment.find()
       .populate("patientId", "name")
       .populate("doctorId", "name speciality")
       .sort({ createdAt: -1 })
       .limit(5);
 
-    // ✅ UPDATED: Pending approvals
+    // UPDATED: Pending approvals
     const pendingApprovals = await User.find({ role: "doctor", status: "pending" })
       .select("name email speciality experience fees createdAt")
       .sort({ createdAt: -1 })
@@ -77,17 +77,17 @@ export const getAdminOverview = async (req, res) => {
   }
 };
 
-// ==========================
-// 🩺 GET ALL DOCTORS
+
+// GET ALL DOCTORS
 // GET /api/admin/doctors
-// ==========================
+
 export const getAllDoctors = async (req, res) => {
   try {
     const { status } = req.query;
 
     let filter = { role: "doctor" };
 
-    // ✅ UPDATED FILTER
+    // UPDATED FILTER
     if (status && status !== "all") {
       filter.status = status;
     }
@@ -96,7 +96,7 @@ export const getAllDoctors = async (req, res) => {
       .select("-password")
       .sort({ createdAt: -1 });
 
-    // ✅ Attach appointment count
+    // Attach appointment count
     const doctorsWithStats = await Promise.all(
       doctors.map(async (doc) => {
         const appointmentCount = await Appointment.countDocuments({ doctorId: doc._id });
@@ -111,14 +111,14 @@ export const getAllDoctors = async (req, res) => {
   }
 };
 
-// ==========================
-// ✅ APPROVE DOCTOR
-// ==========================
+
+// APPROVE DOCTOR
+
 export const approveDoctor = async (req, res) => {
   try {
     const doctor = await User.findByIdAndUpdate(
       req.params.id,
-      { status: "approved", isApproved: true }, // ✅ BOTH UPDATED
+      { status: "approved", isApproved: true }, // BOTH UPDATED
       { new: true }
     ).select("-password");
 
@@ -131,14 +131,14 @@ export const approveDoctor = async (req, res) => {
   }
 };
 
-// ==========================
-// ❌ REJECT DOCTOR
-// ==========================
+
+// REJECT DOCTOR
+
 export const rejectDoctor = async (req, res) => {
   try {
     const doctor = await User.findByIdAndUpdate(
       req.params.id,
-      { status: "rejected", isApproved: false }, // ✅ UPDATED
+      { status: "rejected", isApproved: false }, // UPDATED
       { new: true }
     ).select("-password");
 
@@ -151,9 +151,9 @@ export const rejectDoctor = async (req, res) => {
   }
 };
 
-// ==========================
-// 🗑️ DELETE DOCTOR
-// ==========================
+
+// DELETE DOCTOR
+
 export const deleteDoctor = async (req, res) => {
   try {
     const doctor = await User.findOneAndDelete({ _id: req.params.id, role: "doctor" });
@@ -169,9 +169,9 @@ export const deleteDoctor = async (req, res) => {
   }
 };
 
-// ==========================
-// 👥 GET ALL PATIENTS
-// ==========================
+
+// GET ALL PATIENTS
+
 export const getAllPatients = async (req, res) => {
   try {
     const patients = await User.find({ role: "patient" })
@@ -192,9 +192,9 @@ export const getAllPatients = async (req, res) => {
   }
 };
 
-// ==========================
-// 🗑️ DELETE PATIENT
-// ==========================
+
+// DELETE PATIENT
+
 export const deletePatient = async (req, res) => {
   try {
     const patient = await User.findOneAndDelete({ _id: req.params.id, role: "patient" });
@@ -210,9 +210,9 @@ export const deletePatient = async (req, res) => {
   }
 };
 
-// ==========================
-// 📋 GET ALL APPOINTMENTS
-// ==========================
+
+// GET ALL APPOINTMENTS
+
 export const getAllAppointments = async (req, res) => {
   try {
     const { status, date } = req.query;
@@ -232,10 +232,8 @@ export const getAllAppointments = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+// ANALYTICS
 
-// ==========================
-// 📊 ANALYTICS
-// ==========================
 export const getAnalytics = async (req, res) => {
   try {
     const last7Days = [];
@@ -264,7 +262,7 @@ export const getAnalytics = async (req, res) => {
       cancelled: await Appointment.countDocuments({ status: "cancelled" }),
     };
 
-    // ✅ UPDATED
+    // UPDATED
     const specialityAgg = await User.aggregate([
       { $match: { role: "doctor", status: "approved" } },
       { $group: { _id: "$speciality", count: { $sum: 1 } } },
@@ -298,9 +296,9 @@ export const getAnalytics = async (req, res) => {
   }
 };
 
-// ==========================
-// 🔄 MIGRATION (RUN ONCE)
-// ==========================
+
+// MIGRATION (RUN ONCE)
+
 export const migrateDoctorStatus = async (req, res) => {
   try {
     await User.updateMany(
@@ -319,10 +317,10 @@ export const migrateDoctorStatus = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-// ==========================
-// 🚫 BLOCK PATIENT
+
+// BLOCK PATIENT
 // PUT /api/admin/patients/:id/block
-// ==========================
+
 export const blockPatient = async (req, res) => {
   try {
     const patient = await User.findOneAndUpdate(
@@ -341,10 +339,10 @@ export const blockPatient = async (req, res) => {
   }
 };
 
-// ==========================
-// ✅ UNBLOCK PATIENT
+
+// UNBLOCK PATIENT
 // PUT /api/admin/patients/:id/unblock
-// ==========================
+
 export const unblockPatient = async (req, res) => {
   try {
     const patient = await User.findOneAndUpdate(
