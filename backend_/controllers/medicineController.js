@@ -1,7 +1,7 @@
 import Medicine from "../models/Medicine.js";
 import Appointment from "../models/Appointment.js";
 
-// DOCTOR: Add Medicine
+//DOCTOR: Add Medicine
 export const addMedicine = async (req, res) => {
   try {
     if (req.user.role !== "doctor") {
