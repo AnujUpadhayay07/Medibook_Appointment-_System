@@ -1,20 +1,15 @@
-
 import mongoose from "mongoose";
 import Availability from "../models/Availability.js";
 import User from "../models/User.js"; 
 
-
-
-// ==========================
 // GET /api/doctor/availability (Doctor self)
-// ==========================
 export const getAvailability = async (req, res) => {
   try {
     const doctorId = req.user.id;
 
     let data = await Availability.findOne({ doctorId });
 
-    // ✅ Create default availability if not exists
+    // Create default availability if not exists
     if (!data) {
       data = await Availability.create({
         doctorId,
@@ -38,9 +33,7 @@ export const getAvailability = async (req, res) => {
   }
 };
 
-// ==========================
 // PUT /api/doctor/availability
-// ==========================
 export const saveAvailability = async (req, res) => {
   try {
     const doctorId = req.user.id;
@@ -64,9 +57,7 @@ export const saveAvailability = async (req, res) => {
   }
 };
 
-// ==========================
 // GET /api/doctor/availability/:doctorId (Patient view)
-// ==========================
 export const getAvailabilityForDoctor = async (req, res) => {
   try {
     const { doctorId } = req.params;
@@ -75,16 +66,16 @@ export const getAvailabilityForDoctor = async (req, res) => {
       return res.status(400).json({ message: "Invalid doctor ID" });
     }
 
-    // ✅ Fetch doctor
+    // Fetch doctor
     const doctor = await User.findById(doctorId).lean();
     if (!doctor || doctor.role !== "doctor") {
       return res.status(404).json({ message: "Doctor not found" });
     }
 
-    // ✅ Fetch availability
+    // Fetch availability
     let availability = await Availability.findOne({ doctorId }).lean();
 
-    // ✅ If NOT exists → create default
+    // If NOT exists → create default
     if (!availability) {
       const newAvailability = await Availability.create({
         doctorId,
@@ -103,7 +94,7 @@ export const getAvailabilityForDoctor = async (req, res) => {
       availability = newAvailability.toObject();
     }
 
-    // ✅ SAFETY FIX (MOST IMPORTANT)
+    // SAFETY FIX (MOST IMPORTANT)
     const availabilityData = availability.availability || {};
 
     const consultationDuration = availability.consultationDuration || 30;
@@ -154,7 +145,7 @@ export const getAvailabilityForDoctor = async (req, res) => {
 
     const result = {};
 
-    // ✅ SAFE LOOP
+    // SAFE LOOP
     for (const day in availabilityData) {
       const dayData = availabilityData[day] || {};
       const key = day.toLowerCase();
@@ -171,7 +162,7 @@ export const getAvailabilityForDoctor = async (req, res) => {
       }
     }
 
-    console.log("Generated slots:", result); // 👈 DEBUG
+    console.log("Generated slots:", result); // DEBUG
 
     res.json({
       doctor: {
@@ -185,7 +176,7 @@ export const getAvailabilityForDoctor = async (req, res) => {
     });
 
   } catch (err) {
-    console.error("🔥 ERROR:", err); // VERY IMPORTANT
+    console.error("ERROR:", err); // VERY IMPORTANT
     res.status(500).json({ message: err.message });
   }
 };
