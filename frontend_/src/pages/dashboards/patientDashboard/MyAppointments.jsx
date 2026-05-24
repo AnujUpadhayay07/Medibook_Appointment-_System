@@ -22,7 +22,7 @@ export default function MyAppointments() {
     }
   };
 
-  // 🧠 FILTER LOGIC
+  // FILTER LOGIC
   const filtered = appointments.filter((a) => {
     const today = new Date();
 
@@ -43,7 +43,7 @@ export default function MyAppointments() {
     return true;
   });
 
-  // 🎨 STATUS COLORS
+  // STATUS COLORS
   const getStatusStyle = (status) => {
     switch (status) {
       case "confirmed":
@@ -59,7 +59,7 @@ export default function MyAppointments() {
     }
   };
 
-  // ❌ CANCEL CONFIRM
+  // CANCEL CONFIRM
   const confirmCancel = async () => {
     try {
       await API.put(`/appointments/cancel/${selectedCancel}`);
@@ -162,7 +162,7 @@ export default function MyAppointments() {
         )}
       </div>
 
-      {/* 🔥 CANCEL MODAL */}
+      {/* CANCEL MODAL */}
       {selectedCancel && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl">
