@@ -3,33 +3,33 @@ import User from "../models/User.js";
 import Availability from "../models/Availability.js";
 import { generateSlots } from "../utils/slotGenerator.js";
 
-// ==========================
-// 🧑‍⚕️ BOOK APPOINTMENT (PATIENT)
-// ==========================
+
+// BOOK APPOINTMENT (PATIENT)
+
 export const bookAppointment = async (req, res) => {
   try {
     const patientId = req.user.id;
     const { doctorId, date, time, note } = req.body;
 
-    // ✅ Validate required fields
+    // Validate required fields
     if (!doctorId || !date || !time) {
       return res.status(400).json({ message: "doctorId, date and time are required" });
     }
 
-    // ✅ Prevent past date booking
+    // Prevent past date booking
     const today = new Date().toISOString().split("T")[0];
     if (date < today) {
       return res.status(400).json({ message: "Cannot book an appointment in the past" });
     }
 
-    // ✅ Get day name from date (safe: no timezone issue)
+    // Get day name from date (safe: no timezone issue)
     const [year, month, day] = date.split("-").map(Number);
     const localDate = new Date(year, month - 1, day);
     const dayName = localDate
       .toLocaleDateString("en-US", { weekday: "long" })
       .toLowerCase();
 
-    // ✅ Fetch doctor availability
+    // Fetch doctor availability
     const doctorAvailability = await Availability.findOne({ doctorId });
 
     if (!doctorAvailability) {
@@ -47,7 +47,7 @@ export const bookAppointment = async (req, res) => {
       return res.status(400).json({ message: "Doctor is not available on this day" });
     }
 
-    // ✅ Generate valid slots
+    // Generate valid slots
     const slots = generateSlots(
       daySchedule.slots,
       doctorAvailability.consultationDuration,
@@ -58,7 +58,7 @@ export const bookAppointment = async (req, res) => {
       return res.status(400).json({ message: "Invalid time slot selected" });
     }
 
-    // ✅ Max patients per day check
+    // Max patients per day check
     const count = await Appointment.countDocuments({
       doctorId,
       date,
@@ -69,7 +69,7 @@ export const bookAppointment = async (req, res) => {
       return res.status(400).json({ message: "Doctor is fully booked for this day" });
     }
 
-    // ✅ Create appointment
+    // Create appointment
     // If two patients hit at the same ms, MongoDB unique index will throw 11000
     const appointment = await Appointment.create({
       patientId,
@@ -86,7 +86,7 @@ export const bookAppointment = async (req, res) => {
     });
 
   } catch (error) {
-    // ✅ RACE CONDITION HANDLER — MongoDB duplicate key error
+    // RACE CONDITION HANDLER — MongoDB duplicate key error
     if (error.code === 11000) {
       return res.status(409).json({
         message: "This slot was just booked by someone else. Please choose another time.",
@@ -96,9 +96,9 @@ export const bookAppointment = async (req, res) => {
   }
 };
 
-// ==========================
-// 🕐 GET AVAILABLE SLOTS
-// ==========================
+
+// GET AVAILABLE SLOTS
+
 export const getAvailableSlots = async (req, res) => {
   try {
     const { doctorId, date } = req.query;
@@ -107,7 +107,7 @@ export const getAvailableSlots = async (req, res) => {
       return res.status(400).json({ message: "doctorId and date are required" });
     }
 
-    // ✅ Timezone-safe day name
+    // Timezone-safe day name
     const [year, month, day] = date.split("-").map(Number);
     const localDate = new Date(year, month - 1, day);
     const dayName = localDate
@@ -131,7 +131,7 @@ export const getAvailableSlots = async (req, res) => {
       doctorAvailability.breakTime
     );
 
-    // ✅ Remove already booked slots
+    // Remove already booked slots
     const booked = await Appointment.find({
       doctorId,
       date,
@@ -147,9 +147,9 @@ export const getAvailableSlots = async (req, res) => {
   }
 };
 
-// ==========================
-// 👤 GET MY APPOINTMENTS (PATIENT)
-// ==========================
+
+// GET MY APPOINTMENTS (PATIENT)
+
 export const getMyAppointments = async (req, res) => {
   try {
     const patientId = req.user.id;
@@ -168,9 +168,8 @@ export const getMyAppointments = async (req, res) => {
   }
 };
 
-// ==========================
-// ❌ CANCEL APPOINTMENT (PATIENT)
-// ==========================
+// CANCEL APPOINTMENT (PATIENT)
+
 export const cancelAppointment = async (req, res) => {
   try {
     const patientId = req.user.id;
@@ -199,9 +198,8 @@ export const cancelAppointment = async (req, res) => {
   }
 };
 
-// ==========================
-// 👨‍⚕️ GET MY DOCTORS (PATIENT)
-// ==========================
+// GET MY DOCTORS (PATIENT)
+
 export const getMyDoctors = async (req, res) => {
   try {
     const patientId = req.user.id;
@@ -221,9 +219,7 @@ export const getMyDoctors = async (req, res) => {
   }
 };
 
-// ==========================
 // 🧑‍⚕️ ACCEPT / REJECT APPOINTMENT (DOCTOR)
-// ==========================
 export const updateAppointmentStatus = async (req, res) => {
   try {
     const doctorId = req.user.id;
@@ -253,9 +249,7 @@ export const updateAppointmentStatus = async (req, res) => {
   }
 };
 
-// ==========================
-// ✔️ MARK AS COMPLETED (DOCTOR)
-// ==========================
+//  MARK AS COMPLETED (DOCTOR)
 export const markAsCompleted = async (req, res) => {
   try {
     const doctorId = req.user.id;
