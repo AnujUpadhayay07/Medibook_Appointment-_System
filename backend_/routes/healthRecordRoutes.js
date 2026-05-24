@@ -22,7 +22,7 @@ router.put("/update/:recordId", verifyToken, updateHealthRecord);
 router.post(
   "/add",
   verifyToken,
-  upload.single("file"), // 👈 expects field name "file"
+  upload.single("file"), // expects field name "file"
   addHealthRecord
 );
 
@@ -30,7 +30,7 @@ router.post(
 router.put(
   "/update/:recordId",
   verifyToken,
-  upload.single("file"), // 👈 optional new file
+  upload.single("file"), // optional new file
   updateHealthRecord
 );
 
