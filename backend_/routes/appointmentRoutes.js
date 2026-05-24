@@ -13,10 +13,7 @@ import {
 
 const router = express.Router();
 
-// ==========================
-// 🧑‍⚕️ PATIENT ROUTES
-// ==========================
-
+// PATIENT ROUTES
 // Book appointment
 router.post("/", verifyToken, bookAppointment);
 
@@ -29,20 +26,15 @@ router.put("/cancel/:id", verifyToken, cancelAppointment);
 // Get my doctors
 router.get("/doctors", verifyToken, getMyDoctors);
 
-// 🔥 NEW → Get available slots for booking
+// NEW → Get available slots for booking
 // Example: /api/appointments/slots?doctorId=123&date=2026-04-10
 router.get("/slots", verifyToken, getAvailableSlots);
 
-
-// ==========================
-// 👨‍⚕️ DOCTOR ROUTES
-// ==========================
-
+// DOCTOR ROUTES
 // Accept / Reject appointment
 router.put("/:id/status", verifyToken, updateAppointmentStatus);
 
 // Mark appointment as completed
 router.put("/:id/complete", verifyToken, markAsCompleted);
-
 
 export default router;
